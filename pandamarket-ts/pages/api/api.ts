@@ -1,6 +1,6 @@
 import { Articles, OrderBy } from "../../types/articleTypes";
 
-const BASEURL = "https://panda-market-api.vercel.app";
+const BASEURL = process.env.REACT_APP_BASE_URL;
 
 export async function getArticle(
   orderBy: OrderBy,
