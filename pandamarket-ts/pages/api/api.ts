@@ -1,4 +1,4 @@
-import { OrderBy } from "../../types/articleTypes";
+import { Articles, OrderBy } from "../../types/articleTypes";
 
 const BASEURL = "https://panda-market-api.vercel.app";
 
@@ -8,13 +8,16 @@ export async function getArticle(
   keyword: string = ""
 ) {
   try {
-    const response = await fetch(
-      `${BASEURL}/articles?pageSize=${pageSize}&orderBy=${orderBy}&keyword=${keyword}`
-    );
+    const params = new URLSearchParams({
+      orderBy,
+      pageSize: pageSize.toString(),
+      keyword,
+    });
+    const response = await fetch(`${BASEURL}/articles?${params.toString()}`);
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
     }
-    const body = await response.json();
+    const body: Articles = await response.json();
     return body;
   } catch (error) {
     console.error("Failed to fetch articles:", error);
