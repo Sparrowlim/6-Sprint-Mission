@@ -1,6 +1,5 @@
 import { Articles, OrderBy } from "../../types/articleTypes";
-
-const BASEURL = process.env.REACT_APP_BASE_URL;
+const BASEURL = process.env.NEXT_PUBLIC_REACT_APP_BASE_URL;
 
 export async function getArticle(
   orderBy: OrderBy,
