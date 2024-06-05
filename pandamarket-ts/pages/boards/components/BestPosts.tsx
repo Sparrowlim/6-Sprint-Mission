@@ -4,8 +4,13 @@ import { getArticle } from "../../api/api";
 import PostCard from "./PostCard";
 import useBreakPoint from "../../../hooks/useBreakPoint";
 
-interface BestPostsProps {
-  initialArticle: Articles;
+export async function getStaticProps() {
+  const bestPosts: Articles = await getArticle("recent", 3);
+  return {
+    props: {
+      initialArticle: bestPosts,
+    },
+  };
 }
 
 const pageSizeMap = {
@@ -13,6 +18,10 @@ const pageSizeMap = {
   tablet: 2,
   mobile: 1,
 };
+
+interface BestPostsProps {
+  initialArticle: Articles;
+}
 
 const BestPosts = ({ initialArticle }: BestPostsProps) => {
   const [article, setArticle] = useState<Articles | null>(initialArticle);
@@ -48,10 +57,13 @@ const BestPosts = ({ initialArticle }: BestPostsProps) => {
   // }
   return (
     <>
-      <h1>베스트 게시글</h1>
-      {articleList.map(
-        (article) => article && <PostCard key={article.id} article={article} />
-      )}
+      <h1 className="font-bold text-20px mb-6">베스트 게시글</h1>
+      <div className="flex gap-x-6">
+        {articleList.map(
+          (article) =>
+            article && <PostCard key={article.id} article={article} />
+        )}
+      </div>
     </>
   );
 };

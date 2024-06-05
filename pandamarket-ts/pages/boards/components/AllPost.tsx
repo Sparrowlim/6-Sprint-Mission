@@ -1,8 +1,18 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { getArticle } from "../../api/api";
+import { getArticles } from "../../api/api";
 import { Articles, OrderBy, Post } from "../../../types/articleTypes";
 import PostFeed from "./PostFeed";
 import DropDownMenu from "../components/DropdownMenu";
+import SearchIcon from "../../../public/assets/icon/ic_search.svg";
+import Link from "next/link";
+export async function getServerSideProps() {
+  const allPosts: Articles = await getArticles("recent", 10);
+  return {
+    props: {
+      initialArticle: allPosts,
+    },
+  };
+}
 
 interface AllPostProps {
   initialArticle: Articles;
@@ -17,7 +27,7 @@ const AllPost = ({ initialArticle }: AllPostProps) => {
   useEffect(() => {
     async function fetchArticle() {
       try {
-        const response: Articles = await getArticle(orderBy, 10, searchText);
+        const response: Articles = await getArticles(orderBy, 10, searchText);
         if (!response) {
           throw new Error("게시물을 찾을 수 없습니다");
         }
@@ -42,11 +52,33 @@ const AllPost = ({ initialArticle }: AllPostProps) => {
   };
   return (
     <>
-      <h1>게시글</h1>
-      <input value={searchText} onChange={handleInputChange} />
-      <DropDownMenu onSortSelection={handleSortSelection} />
+      <div className="flex place-content-between">
+        <h1 className="text-20px font-bold text-gray-900">게시글</h1>
+        <button className="rounded-lg bg-blue px-[23px] py-[12px] text-[16px] font-semibold text-white">
+          글쓰기
+        </button>
+      </div>
+      <div className="flex place-content-between">
+        <div className="relative flex grow">
+          <SearchIcon
+            className="absolute left-[20px] top-1/2 -translate-y-1/2"
+            viewBox="4 4 15 15"
+            width="15"
+            height="15"
+          />
+          <input
+            value={searchText}
+            onChange={handleInputChange}
+            className="h-[42px] grow rounded-xl bg-gray-100 pl-[44px]"
+            placeholder="검색할 상품을 입력해주세요"
+          />
+        </div>
+        <DropDownMenu onSortSelection={handleSortSelection} />
+      </div>
       {articleList.map((article) => (
-        <PostFeed key={article.id} article={article} />
+        <Link href={`/boards/${article.id}`} key={article.id}>
+          <PostFeed article={article} />
+        </Link>
       ))}
     </>
   );
