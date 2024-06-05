@@ -1,25 +1,36 @@
-import { Articles, OrderBy } from "../../types/articleTypes";
+import instance from "./axiosInstance";
+import { Articles, OrderBy, Post } from "../../types/articleTypes";
 const BASEURL = process.env.NEXT_PUBLIC_REACT_APP_BASE_URL;
 
-export async function getArticle(
-  orderBy: OrderBy,
-  pageSize: number,
-  keyword: string = ""
-) {
+export async function GET<T>(
+  endpoint: string,
+  params?: Record<string, string | number>,
+): Promise<T> {
   try {
-    const params = new URLSearchParams({
-      orderBy,
-      pageSize: pageSize.toString(),
-      keyword,
-    });
-    const response = await fetch(`${BASEURL}/articles?${params.toString()}`);
-    if (!response.ok) {
+    const response = await instance.get<T>(endpoint, { params });
+
+    if (response.status !== 200) {
       throw new Error(`HTTP error: ${response.status}`);
     }
-    const body: Articles = await response.json();
-    return body;
+    return response.data;
   } catch (error) {
     console.error("Failed to fetch articles:", error);
     throw error;
   }
+}
+
+export async function getArticles(
+  orderBy: OrderBy,
+  pageSize: number,
+  keyword: string = "",
+): Promise<Articles> {
+  return await GET<Articles>("/articles", {
+    orderBy,
+    pageSize,
+    keyword,
+  });
+}
+
+export async function getArticleById(id: string) {
+  return await GET<Post>(`/articles/${id}`);
 }
