@@ -7,11 +7,11 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   return (
-    <>
+    <div className="mx-auto max-w-[1200px]">
       <Header />
       <h1>레이아웃</h1>
       {children}
-    </>
+    </div>
   );
 };
 
