@@ -3,13 +3,18 @@ import React from "react";
 
 interface AddCommentProps {
   currentId: string | string[];
+  accessToken: string;
+  comment: { content: string };
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const AddComment = ({ currentId }: AddCommentProps) => {
-  const [comment, setComment] = React.useState<Record<string, string>>({
-    content: "",
-  });
-
+const AddComment = ({
+  currentId,
+  comment,
+  onInputChange,
+  onSubmit,
+}: AddCommentProps) => {
   let stringId = "";
   if (Array.isArray(currentId)) {
     stringId = currentId[0];
@@ -18,22 +23,9 @@ const AddComment = ({ currentId }: AddCommentProps) => {
   } else {
     throw new Error("id is not string");
   }
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    //인증문제로 인해 나중에 처리
-    if (comment.content === "") {
-      return;
-    }
-    const response = await postArticleComment(stringId, comment);
-  };
-
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const comment = e.target.value;
-    setComment({ content: comment });
-  };
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={onSubmit}>
         <div className="flex flex-col gap-[16px]">
           <label
             htmlFor="comment"
@@ -42,10 +34,11 @@ const AddComment = ({ currentId }: AddCommentProps) => {
             댓글 달기
           </label>
           <input
+            value={comment.content}
             className="placeholder:gray-400 placeholder: h-[104px] rounded-[12px] bg-gray-200 px-[24px] placeholder:text-[14px] placeholder:font-normal"
             type="text"
             name="comment"
-            onChange={handleInput}
+            onChange={onInputChange}
             placeholder="댓글을 입력해주세요."
           />
           <div className="flex flex-row-reverse">

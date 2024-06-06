@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Articles } from "../../../types/articleTypes";
+import { Articles } from "../../../types/articleResponseTypes";
 import { getArticles } from "../../api/api";
 import PostCard from "./PostCard";
 import useBreakPoint from "../../../hooks/useBreakPoint";

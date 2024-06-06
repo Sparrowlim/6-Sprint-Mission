@@ -1,6 +1,6 @@
 import BestPosts from "./components/BestPosts";
 import AllPost from "./components/AllPost";
-import { Articles } from "@/types/articleTypes";
+import { Articles } from "@/types/articleResponseTypes";
 import Layout from "@/components/UI/Layout";
 interface IndexProps {
   initialBestArticle: Articles;

@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { getArticleById } from "../api/api";
+import { getArticleById, postArticleComment, testLogin } from "../api/api";
 import { useRouter } from "next/router";
-import { Post } from "@/types/articleTypes";
+import { Post } from "@/types/articleResponseTypes";
 import Profile from "../../public/assets/ui/ic_profile.svg";
 import Heart from "../../public/assets/icon/ic_heart.svg";
+import Back from "../../public/assets/icon/ic_back.svg";
 import { formatDate } from "../../utils/utils";
 import { GetServerSideProps } from "next";
 import Layout from "@/components/UI/Layout";
 import AddComment from "./components/AddComment";
 import CommentList from "./components/CommentList";
+import Link from "next/link";
+import { SignInResponse } from "@/types/authenticationTypes";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id;
@@ -17,24 +20,32 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       notFound: true,
     };
   }
+
   const initialPost = await getArticleById(id);
   if (!initialPost) {
     return {
       notFound: true,
     };
   }
+
+  let { accessToken }: SignInResponse = await testLogin();
+  if (!accessToken) {
+    accessToken = "";
+  }
   return {
-    props: { initialPost },
+    props: { initialPost, accessToken },
   };
 };
 
 interface PostContentProps {
   initialPost: Post;
+  accessToken: string;
 }
 
-const PostContent = ({ initialPost }: PostContentProps) => {
+const PostContent = ({ initialPost, accessToken }: PostContentProps) => {
   const [post, setPost] = useState<Post>(initialPost);
   const [error, setError] = useState<string | null>(null);
+  const [comment, setComment] = useState({ content: "" });
   const router = useRouter();
   const { id } = router.query;
 
@@ -74,6 +85,20 @@ const PostContent = ({ initialPost }: PostContentProps) => {
     date = formatDate(dateObject);
   }
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (comment.content === "") {
+      return;
+    }
+    await postArticleComment(stringId, comment, accessToken);
+    setComment((prevComment) => ({ ...prevComment, content: "" }));
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputText = e.target.value;
+    setComment({ content: inputText });
+  };
+
   return (
     <Layout>
       <div className="mb-[64px] flex flex-col gap-[16px] pt-[33px]">
@@ -104,8 +129,25 @@ const PostContent = ({ initialPost }: PostContentProps) => {
           {post?.content}
         </div>
       </div>
-      <AddComment currentId={id} />
-      <CommentList currentId={id} />
+      <AddComment
+        currentId={id}
+        accessToken={accessToken}
+        comment={comment}
+        onInputChange={handleInputChange}
+        onSubmit={handleSubmit}
+      />
+      <CommentList currentId={id} comment={comment} />
+      <div className="mt-[40px] flex justify-center">
+        <Link
+          href="/boards/"
+          className="rounded-[40px] bg-blue px-[71px] py-[12px] text-center text-white"
+        >
+          <div className="flex items-center gap-[10px]">
+            <div>목록으로 돌아가기</div>
+            <Back width="24" height="24" />
+          </div>
+        </Link>
+      </div>
     </Layout>
   );
 };

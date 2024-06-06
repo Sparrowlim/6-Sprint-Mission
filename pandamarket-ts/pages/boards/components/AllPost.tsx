@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { getArticles } from "../../api/api";
-import { Articles, OrderBy, Post } from "../../../types/articleTypes";
+import { Articles, OrderBy, Post } from "../../../types/articleResponseTypes";
 import PostFeed from "./PostFeed";
 import DropDownMenu from "../components/DropdownMenu";
 import SearchIcon from "../../../public/assets/icon/ic_search.svg";
