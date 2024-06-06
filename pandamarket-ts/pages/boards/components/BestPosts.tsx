@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Articles } from "../../../types/articleTypes";
-import { getArticle } from "../../api/api";
+import { getArticles } from "../../api/api";
 import PostCard from "./PostCard";
 import useBreakPoint from "../../../hooks/useBreakPoint";
 
 export async function getStaticProps() {
-  const bestPosts: Articles = await getArticle("recent", 3);
+  const bestPosts: Articles = await getArticles("recent", 3);
   return {
     props: {
       initialArticle: bestPosts,
@@ -34,7 +34,7 @@ const BestPosts = ({ initialArticle }: BestPostsProps) => {
       const pageSize = pageSizeMap[device];
       if (pageSize === 0) return;
       try {
-        const response: Articles = await getArticle("like", pageSize);
+        const response: Articles = await getArticles("like", pageSize);
         if (!response) {
           throw new Error("게시물을 찾을 수 없습니다");
         }
@@ -57,11 +57,11 @@ const BestPosts = ({ initialArticle }: BestPostsProps) => {
   // }
   return (
     <>
-      <h1 className="font-bold text-20px mb-6">베스트 게시글</h1>
+      <h1 className="mb-6 text-20px font-bold">베스트 게시글</h1>
       <div className="flex gap-x-6">
         {articleList.map(
           (article) =>
-            article && <PostCard key={article.id} article={article} />
+            article && <PostCard key={article.id} article={article} />,
         )}
       </div>
     </>
