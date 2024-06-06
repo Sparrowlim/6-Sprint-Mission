@@ -1,0 +1,65 @@
+import { postArticleComment } from "@/pages/api/api";
+import React from "react";
+
+interface AddCommentProps {
+  currentId: string | string[];
+}
+
+const AddComment = ({ currentId }: AddCommentProps) => {
+  const [comment, setComment] = React.useState<Record<string, string>>({
+    content: "",
+  });
+
+  let stringId = "";
+  if (Array.isArray(currentId)) {
+    stringId = currentId[0];
+  } else if (typeof currentId === "string") {
+    stringId = currentId;
+  } else {
+    throw new Error("id is not string");
+  }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    //인증문제로 인해 나중에 처리
+    if (comment.content === "") {
+      return;
+    }
+    const response = await postArticleComment(stringId, comment);
+  };
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const comment = e.target.value;
+    setComment({ content: comment });
+  };
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-[16px]">
+          <label
+            htmlFor="comment"
+            className="text-[16px] font-semibold text-gray-900"
+          >
+            댓글 달기
+          </label>
+          <input
+            className="placeholder:gray-400 placeholder: h-[104px] rounded-[12px] bg-gray-200 px-[24px] placeholder:text-[14px] placeholder:font-normal"
+            type="text"
+            name="comment"
+            onChange={handleInput}
+            placeholder="댓글을 입력해주세요."
+          />
+          <div className="flex flex-row-reverse">
+            <button
+              type="submit"
+              className={`${comment.content === "" ? "bg-gray-400" : "bg-blue"} h-[42px] w-[74px] rounded-[8px] text-[16px] font-semibold text-white`}
+            >
+              등록
+            </button>
+          </div>
+        </div>
+      </form>
+    </>
+  );
+};
+
+export default AddComment;

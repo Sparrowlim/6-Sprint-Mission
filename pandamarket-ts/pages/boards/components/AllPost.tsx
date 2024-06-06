@@ -76,7 +76,7 @@ const AllPost = ({ initialArticle }: AllPostProps) => {
         <DropDownMenu onSortSelection={handleSortSelection} />
       </div>
       {articleList.map((article) => (
-        <Link href={`/boards/${article.id}`} key={article.id}>
+        <Link href={`/addboard/${article.id}`} key={article.id}>
           <PostFeed article={article} />
         </Link>
       ))}
