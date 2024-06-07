@@ -32,4 +32,8 @@ export interface ArticleCommentsResponse {
   list: Comment[];
 }
 
+export interface ImageUploadResponse {
+  url: string;
+}
+
 export type OrderBy = "like" | "recent";

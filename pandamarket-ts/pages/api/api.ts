@@ -2,6 +2,7 @@ import instance from "./axiosInstance";
 import {
   ArticleCommentsResponse,
   Articles,
+  ImageUploadResponse,
   OrderBy,
   Post,
 } from "../../types/articleResponseTypes";
@@ -29,7 +30,7 @@ export async function GET<T>(
 // base POST 선언부
 export async function POST<T>(
   endpoint: string,
-  body?: Record<string, string>,
+  body?: FormData | Record<string, string>,
   headers?: Record<string, string>,
 ): Promise<T> {
   try {
@@ -86,6 +87,28 @@ export async function postArticleComment(
   accessToken: string,
 ) {
   return await POST(`/articles/${articleId}/comments`, content, {
+    Authorization: `Bearer ${accessToken}`,
+  });
+}
+
+export async function postImageUpload(image: FormData, accessToken: string) {
+  return await POST<ImageUploadResponse>(`/images/upload`, image, {
+    Authorization: `Bearer ${accessToken}`,
+  });
+}
+
+export async function postArticle(
+  image: string,
+  content: string,
+  title: string,
+  accessToken: string,
+) {
+  const body = {
+    image,
+    content,
+    title,
+  };
+  return await POST(`/articles`, body, {
     Authorization: `Bearer ${accessToken}`,
   });
 }
