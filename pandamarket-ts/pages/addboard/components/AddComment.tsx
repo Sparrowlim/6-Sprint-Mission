@@ -5,14 +5,14 @@ interface AddCommentProps {
   currentId: string | string[];
   accessToken: string;
   comment: { content: string };
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onTextAreaChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const AddComment = ({
   currentId,
   comment,
-  onInputChange,
+  onTextAreaChange,
   onSubmit,
 }: AddCommentProps) => {
   let stringId = "";
@@ -33,12 +33,11 @@ const AddComment = ({
           >
             댓글 달기
           </label>
-          <input
+          <textarea
             value={comment.content}
-            className="placeholder:gray-400 placeholder: h-[104px] rounded-[12px] bg-gray-200 px-[24px] placeholder:text-[14px] placeholder:font-normal"
-            type="text"
+            className="placeholder:gray-400 placeholder: h-[104px] rounded-[12px] bg-gray-200 px-[24px] pb-[64px] pt-[16px] placeholder:text-[14px] placeholder:font-normal"
             name="comment"
-            onChange={onInputChange}
+            onChange={onTextAreaChange}
             placeholder="댓글을 입력해주세요."
           />
           <div className="flex flex-row-reverse">

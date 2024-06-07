@@ -94,7 +94,7 @@ const PostContent = ({ initialPost, accessToken }: PostContentProps) => {
     setComment((prevComment) => ({ ...prevComment, content: "" }));
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputText = e.target.value;
     setComment({ content: inputText });
   };
@@ -133,7 +133,7 @@ const PostContent = ({ initialPost, accessToken }: PostContentProps) => {
         currentId={id}
         accessToken={accessToken}
         comment={comment}
-        onInputChange={handleInputChange}
+        onTextAreaChange={handleTextAreaChange}
         onSubmit={handleSubmit}
       />
       <CommentList currentId={id} comment={comment} />
