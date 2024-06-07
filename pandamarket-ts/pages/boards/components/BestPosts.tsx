@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Articles } from "../../../types/articleResponseTypes";
 import { getArticles } from "../../api/api";
-import PostCard from "./PostCard";
+import BestPostCard from "./BestPostCard";
 import useBreakPoint from "../../../hooks/useBreakPoint";
 
 export async function getStaticProps() {
@@ -56,15 +56,15 @@ const BestPosts = ({ initialArticle }: BestPostsProps) => {
   //   alert(`오류: ${error}`);
   // }
   return (
-    <>
+    <div className="pb-[40px]">
       <h1 className="mb-6 text-20px font-bold">베스트 게시글</h1>
       <div className="flex gap-x-6">
         {articleList.map(
           (article) =>
-            article && <PostCard key={article.id} article={article} />,
+            article && <BestPostCard key={article.id} article={article} />,
         )}
       </div>
-    </>
+    </div>
   );
 };
 

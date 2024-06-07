@@ -1,8 +1,9 @@
-import { Post } from "@/types/articleTypes";
+import { Post } from "@/types/articleResponseTypes";
 import { formatDate } from "@/utils/utils";
 import Heart from "../../../public/assets/icon/ic_heart.svg";
 import Profile from "../../../public/assets/ui/ic_profile.svg";
 import React from "react";
+import Image from "next/image";
 
 interface PostFeedProps {
   article: Post;
@@ -20,14 +21,14 @@ const PostFeed: React.FC<PostFeedProps> = ({ article }) => {
         <div className="pt-[24px]">
           <div className="pb-[24px]">
             <div className="flex place-content-between">
-              <div className="sm:text-18px h-[48px] font-semibold md:text-20px lg:text-20px">
+              <div className="sm:text-18px font-semibold md:text-20px lg:text-20px">
                 {article.title}
               </div>
               {article.image && (
-                <img
+                <Image
                   className="h-[72px] w-[72px] shrink-0 grow-0 rounded-[8px] border-[1px] border-solid border-gray-200 px-[12px] py-[14px]"
                   src={article.image}
-                  alt={article.title}
+                  alt={`${article.writer.nickname}`}
                   width={48}
                   height={45}
                 />

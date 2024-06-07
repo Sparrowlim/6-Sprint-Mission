@@ -51,14 +51,17 @@ const AllPost = ({ initialArticle }: AllPostProps) => {
     setSearchText(e.target.value);
   };
   return (
-    <>
-      <div className="flex place-content-between">
+    <div className="flex flex-col gap-[24px]">
+      <div className="flex place-content-between items-center">
         <h1 className="text-20px font-bold text-gray-900">게시글</h1>
-        <button className="rounded-lg bg-blue px-[23px] py-[12px] text-[16px] font-semibold text-white">
+        <Link
+          href="/addboard/"
+          className="rounded-[8px] bg-blue px-[23px] py-[12px] text-[16px] font-semibold text-white"
+        >
           글쓰기
-        </button>
+        </Link>
       </div>
-      <div className="flex place-content-between">
+      <div className="flex place-content-between items-center gap-[16px]">
         <div className="relative flex grow">
           <SearchIcon
             className="absolute left-[20px] top-1/2 -translate-y-1/2"
@@ -75,12 +78,14 @@ const AllPost = ({ initialArticle }: AllPostProps) => {
         </div>
         <DropDownMenu onSortSelection={handleSortSelection} />
       </div>
-      {articleList.map((article) => (
-        <Link href={`/addboard/${article.id}`} key={article.id}>
-          <PostFeed article={article} />
-        </Link>
-      ))}
-    </>
+      <div>
+        {articleList.map((article) => (
+          <Link href={`/addboard/${article.id}`} key={article.id}>
+            <PostFeed article={article} />
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 };
 
