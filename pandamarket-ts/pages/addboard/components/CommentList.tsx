@@ -40,7 +40,6 @@ const CommentList = ({ currentId, comment }: AddCommentProps) => {
     };
     fetchComments();
   }, [stringId, comment]);
-  console.log(comments === null ? 1 : comments[0]);
 
   return (
     <>
