@@ -50,8 +50,9 @@ const PostContent = ({ initialPost, accessToken }: PostContentProps) => {
   const { id } = router.query;
 
   let stringId = "";
-  if (Array.isArray(id)) {
-    stringId = id[0];
+  if (typeof id === "undefined") {
+  } else if (Array.isArray(id)) {
+    stringId = id[0].toString();
   } else if (typeof id === "string") {
     stringId = id;
   } else {
@@ -130,13 +131,13 @@ const PostContent = ({ initialPost, accessToken }: PostContentProps) => {
         </div>
       </div>
       <AddComment
-        currentId={id}
+        currentId={stringId}
         accessToken={accessToken}
         comment={comment}
         onTextAreaChange={handleTextAreaChange}
         onSubmit={handleSubmit}
       />
-      <CommentList currentId={id} comment={comment} />
+      <CommentList currentId={stringId} comment={comment} />
       <div className="mt-[40px] flex justify-center">
         <Link
           href="/boards/"

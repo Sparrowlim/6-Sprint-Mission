@@ -15,11 +15,11 @@ export const getServerSideProps = async () => {
   };
 };
 
-interface indexProps {
+interface AddBoardProps {
   accessToken: string;
 }
 
-const index = ({ accessToken }: indexProps) => {
+const AddBoard = ({ accessToken }: AddBoardProps) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const imageRef = useRef<HTMLInputElement>(null);
@@ -142,4 +142,4 @@ const index = ({ accessToken }: indexProps) => {
   );
 };
 
-export default index;
+export default AddBoard;
